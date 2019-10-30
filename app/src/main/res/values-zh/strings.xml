@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">OTA升级</string>
+    <string name="download_file_start">开始</string>
+    <string name="download_file_pause">暂停</string>
+    <string name="download_file_continue">继续</string>
+    <string name="total_length">文件总载量:</string>
+    <string name="current_offset">当前下载量:</string>
+    <string name="download_file_complete">完成</string>
+    <string name="download_file_error">错误</string>
+</resources>

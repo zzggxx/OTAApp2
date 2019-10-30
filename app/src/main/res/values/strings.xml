@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">OTAApp2</string>
+
+    <string name="download_file_start">START</string>
+    <string name="download_file_pause">PAUSE</string>
+    <string name="download_file_continue">CONTINUE</string>
+    <string name="download_file_complete">COMPLETE</string>
+    <string name="download_file_error">ERROR</string>
+
+    <string name="total_length">total_length:</string>
+    <string name="current_offset">current_offset:</string>
+
+</resources>
