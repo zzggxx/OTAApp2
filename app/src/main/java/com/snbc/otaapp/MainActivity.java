@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,8 +19,8 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-
-import androidx.appcompat.app.AppCompatActivity;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //    size:690M
     private static final String url1 = "http://pztmwtcsl.bkt.clouddn.com/system.img";
     //    company internet,size 1.4G
-    private static final String url2 = "http://192.168.188.4/test/snbc_rk3399.img";
+    private static final String url2 = "http://192.168.188.4/test/update.zip";
 
     FileDownloadListener mListener = new FileDownloadListener() {
         @Override
@@ -96,6 +98,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences mSp;
     private int mTotalM;
     private int mSoFarM;
+    private static LinearLayout mLlRestartShow;
+    private static TextView mTvSure;
+    private static final int[] n = {10};
+    private static TimerTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +130,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         total_length.setText(getString(R.string.total_length) + "   " + totalLength + "M");
         int soFarLength = mSp.getInt("soFarLength", 0);
         current_offset.setText(getString(R.string.current_offset) + "   " + soFarLength + "M");
+
+        findViewById(R.id.tv_cancel).setOnClickListener(this);
+        mTvSure = (TextView) findViewById(R.id.tv_sure);
+        mTvSure.setOnClickListener(this);
+        mLlRestartShow = (LinearLayout) findViewById(R.id.ll_restart_show);
     }
 
     @Override
@@ -159,13 +170,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
                 break;
+            case R.id.tv_cancel:
+                mLlRestartShow.setVisibility(View.GONE);
+                task.cancel();
+                break;
+            case R.id.tv_sure:
+                reboot();
+                break;
             default:
                 break;
         }
     }
 
     private BaseDownloadTask createDownloadTask() {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SNBCUpdate.img";
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "update.zip";
         return FileDownloader.getImpl().create(url2)
                 .setPath(path)
                 //update download progress
@@ -177,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setListener(mListener);
     }
 
-    private void reboot() {
+    private static void reboot() {
         try {
             Process process = Runtime.getRuntime().exec("su");
             DataOutputStream out = new DataOutputStream(process.getOutputStream());
@@ -198,11 +216,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         private TextView currentOffset;
         private ProgressBar progressBar;
         private TextView downloadSpeed;
-        private Context context;
+        private MainActivity context;
         private WeakReference<MainActivity> weakReferenceContext;
 
         public ViewHolder(WeakReference<MainActivity> weakReferenceContext, Button btnControl, TextView totalLength,
-                          TextView currentOffset, ProgressBar progressBar, TextView downloadSpeed, Context context) {
+                          TextView currentOffset, ProgressBar progressBar, TextView downloadSpeed, MainActivity context) {
             this.weakReferenceContext = weakReferenceContext;
             this.btnControl = btnControl;
             this.totalLength = totalLength;
@@ -233,6 +251,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         public void updateCompleted() {
             btnControl.setText(R.string.download_file_complete);
+            mLlRestartShow.setVisibility(View.VISIBLE);
+
+            new Timer().schedule(task = new TimerTask() {
+                @Override
+                public void run() {
+                    context.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mTvSure.setText(context.getString(R.string.restart_now) + "(" + n[0]-- + ")");
+                            if ("0".equals(String.valueOf(n[0]))) {
+                                reboot();
+                            }
+                        }
+                    });
+                }
+            }, 1000, 1000);
+
         }
 
         public void updateTotalLength(int totalM) {
