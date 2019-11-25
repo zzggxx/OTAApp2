@@ -14,5 +14,6 @@
     <string name="is_restart_now">is_restart_now?</string>
     <string name="later_remind">later_remind</string>
     <string name="restart_now">restart_now</string>
+    <string name="please_checkout_update_url">please_checkout_update_url</string>
 
 </resources>

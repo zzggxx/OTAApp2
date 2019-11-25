@@ -5,11 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
@@ -108,7 +110,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initView();
+        String updateurl = System.getProperty("updateurl");
+        if (!TextUtils.isEmpty(updateurl)) {
+            initView();
+        } else {
+            Toast.makeText(this,R.string.please_checkout_update_url,Toast.LENGTH_SHORT).show();
+            System.exit(0);
+        }
     }
 
     private void initView() {
