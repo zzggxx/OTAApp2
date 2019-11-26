@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             initView();
         } else {
             Toast.makeText(this,R.string.please_checkout_update_url,Toast.LENGTH_SHORT).show();
-            System.exit(0);
+            finish();
         }
     }
 
