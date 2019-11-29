@@ -1,6 +1,7 @@
 package com.snbc.otaapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,9 +18,7 @@ import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
 
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -110,11 +109,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String updateurl = System.getProperty("updateurl");
+        String updateurl = Utils.getProperty("updateurl", "");
         if (!TextUtils.isEmpty(updateurl)) {
             initView();
         } else {
-            Toast.makeText(this,R.string.please_checkout_update_url,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.please_checkout_update_url, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -191,9 +190,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private BaseDownloadTask createDownloadTask() {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "update.zip";
         return FileDownloader.getImpl().create(url2)
-                .setPath(path)
+                .setPath(getPath())
                 //update download progress
                 .setCallbackProgressTimes(1500)
                 //update download speed;
@@ -203,16 +201,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setListener(mListener);
     }
 
-    private static void reboot() {
-        try {
-            Process process = Runtime.getRuntime().exec("su");
-            DataOutputStream out = new DataOutputStream(process.getOutputStream());
-            out.writeBytes("reboot recovery\n");
-            out.writeBytes("exit\n");
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private String getPath() {
+        File mnt = Environment.getExternalStorageDirectory();
+        File file1 = new File(mnt, "update");
+        file1.mkdir();
+        return file1.getAbsoluteFile() + File.separator + "update.zip";
+    }
+
+    public void reboot() {
+//        try {
+//            Process process = Runtime.getRuntime().exec("su");
+//            DataOutputStream out = new DataOutputStream(process.getOutputStream());
+//            out.writeBytes("reboot recovery\n");
+//            out.writeBytes("exit\n");
+//            out.flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        Intent intent = new Intent();
+        intent.setAction("com.update.firmware");
+        sendBroadcast(intent);
 
     }
 
@@ -269,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
                             mTvSure.setText(context.getString(R.string.restart_now) + "(" + n[0]-- + ")");
                             if ("0".equals(String.valueOf(n[0]))) {
-                                reboot();
+                                context.reboot();
                             }
                         }
                     });
