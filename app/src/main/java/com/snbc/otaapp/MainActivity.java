@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String updateurl = Utils.getProperty("updateurl", "");
+        String updateurl = Utils.getProperty("ro.config.otaurl", "");
         if (!TextUtils.isEmpty(updateurl)) {
             initView();
         } else {
