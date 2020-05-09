@@ -4,6 +4,7 @@
 
     <string name="download_file_start">START</string>
     <string name="download_file_pause">PAUSE</string>
+    <string name="downloading">downloading</string>
     <string name="download_file_continue">CONTINUE</string>
     <string name="download_file_complete">COMPLETE</string>
     <string name="download_file_error">ERROR</string>
@@ -15,5 +16,15 @@
     <string name="later_remind">later_remind</string>
     <string name="restart_now">restart_now</string>
     <string name="please_checkout_update_url">please_checkout_update_url</string>
+
+    <string name="check_update_config">check_update_config</string>
+    <string name="current_system_is_lastest">current_system_is_lastest</string>
+    <string name="current_system_have_enable_update">current_system_have_enable_update:</string>
+    <string name="update_description">update_description:\n</string>
+
+    <string name="no_network">no_network</string>
+    <string name="not_wifi_network">not_wifi_network</string>
+    <string name="file_compare_error">File compare error,retry later!</string>
+    <string name="update_success">Update Success!</string>
 
 </resources>

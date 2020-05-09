@@ -20,32 +20,36 @@ public class ViewHolder {
     private TextView totalLength;
     private TextView currentOffset;
     private ProgressBar progressBar;
-    private TextView downloadSpeed;
+    //    private TextView downloadSpeed;
     private MainActivity context;
     private WeakReference<MainActivity> weakReferenceContext;
 
     public ViewHolder(WeakReference<MainActivity> weakReferenceContext, Button btnControl,
                       TextView totalLength, TextView currentOffset, ProgressBar progressBar,
-                      TextView downloadSpeed, MainActivity context) {
+            /*TextView downloadSpeed,*/ MainActivity context) {
         this.weakReferenceContext = weakReferenceContext;
         this.btnControl = btnControl;
         this.totalLength = totalLength;
         this.currentOffset = currentOffset;
         this.progressBar = progressBar;
-        this.downloadSpeed = downloadSpeed;
+//        this.downloadSpeed = downloadSpeed;
         this.context = context;
     }
 
-    private void updateSpeed(int speed) {
-        downloadSpeed.setText(String.format("%dKB/s", speed));
-    }
+//    private void updateSpeed(int speed) {
+//        downloadSpeed.setText(String.format("%dKB/s", speed));
+//    }
 
-    public void updateProgress(int soFarM, int percent, int speed) {
+    public void updateProgress(int soFarM, int percent/*, int speed*/) {
 
-        currentOffset.setText(context.getString(R.string.current_offset) + "   " + soFarM + "M");
+        currentOffset.setText(/*context.getString(R.string.current_offset) + "   " +*/ soFarM + "M");
         progressBar.setProgress(percent);
 
-        updateSpeed(speed);
+//        updateSpeed(speed);
+    }
+
+    public void setProgress(int percent) {
+        progressBar.setProgress(percent);
     }
 
     public void updateError() {
@@ -74,6 +78,6 @@ public class ViewHolder {
     }
 
     public void updateTotalLength(int totalM) {
-        totalLength.setText(context.getString(R.string.total_length) + "   " + totalM + "M");
+        totalLength.setText(/*context.getString(R.string.total_length) + "   " +*/ totalM + "M / ");
     }
 }

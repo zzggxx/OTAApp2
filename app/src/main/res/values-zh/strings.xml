@@ -1,14 +1,31 @@
 <resources>
+
     <string name="app_name">系统更新</string>
+
     <string name="download_file_start">开始</string>
     <string name="download_file_pause">暂停</string>
+    <string name="downloading">下载中</string>
     <string name="download_file_continue">继续</string>
-    <string name="total_length">文件总载量:</string>
-    <string name="current_offset">当前下载量:</string>
     <string name="download_file_complete">完成</string>
     <string name="download_file_error">错误</string>
+
+    <string name="total_length">文件总载量:</string>
+    <string name="current_offset">当前下载量:</string>
+
     <string name="is_restart_now">现在开始升级?</string>
     <string name="later_remind">稍后提醒</string>
     <string name="restart_now">立即重启</string>
     <string name="please_checkout_update_url">请检查升级的地址</string>
+
+    <string name="check_update_config">正在检查更新</string>
+    <string name="current_system_is_lastest">当前系统已经是最新,无需更新</string>
+    <string name="current_system_have_enable_update">当前系统有可用更新:</string>
+    <string name="update_description">升级内容:\n</string>
+
+    <string name="no_network">没有网络</string>
+    <string name="not_wifi_network">当前非WIFI网络,请注意流量</string>
+    <string name="file_compare_error">文件校验失败,请稍后再试</string>
+    <string name="update_success">系统升级成功!</string>
+
+
 </resources>

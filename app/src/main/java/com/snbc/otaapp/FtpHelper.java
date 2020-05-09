@@ -87,6 +87,7 @@ public class FtpHelper {
         try {
             // 代码段1:使用这个方法时，dst可以是目录，若dst为目录，则下载到本地的文件名将与src文件名相同
             //断点续传
+            Log.i(TAG, "downloadFile: " + src + "__" + dst);
             chSftp.get(src, dst, mSftpProgressMonitor, ChannelSftp.RESUME);
             /***
              OutputStream out = new FileOutputStream(dst);
@@ -176,10 +177,23 @@ public class FtpHelper {
         } catch (JSchException e) {
             e.printStackTrace();
             Log.i(TAG, e.toString());
+
+            closeChannel();
         }
 
         return (ChannelSftp) channel;
     }
 
+    public void setSftpProgressMonitor(SftpProgressMonitor sftpProgressMonitor) {
+        mSftpProgressMonitor = sftpProgressMonitor;
+    }
+
+    public void setSrc(String src) {
+        mSrc = src;
+    }
+
+    public void setDest(String dest) {
+        mDest = dest;
+    }
 }
 
